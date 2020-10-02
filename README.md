@@ -3,7 +3,7 @@
 My server harddrive failed so I made this so I don't lose stuff in future
 
 This allows you to keep a list of files and/or folders that you want to be backed up.
-For clarification, when I mean backup, I mean that it creates an archive of the files *you still need to find someplace safe for it*
+For clarification, when I mean backup, I mean that it creates an archive of the files **you still need to find someplace safe for it**
 
 ### How to
 first install using nimble
