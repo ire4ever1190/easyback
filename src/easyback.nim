@@ -92,10 +92,9 @@ when isMainModule:
         # TODO make this into an actual parser
         command = command.replace("$f", config.file)
         command = command.replace("$F", config.paths.join(" "))
-        echo(command)
-        execCmd(command)
+        discard execCmd(command)
         if config.finish != "":
-            execCmd(config.finish)
+            discard execCmd(config.finish)
     # List all the files
     elif args["list"]:
         for path in config.paths:
