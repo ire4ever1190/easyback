@@ -5,6 +5,7 @@ import json
 import sequtils
 import sugar
 import osproc
+import times
 
 type Config = object
     paths: seq[string]
@@ -14,8 +15,7 @@ type Config = object
 
 const defaultConfig = Config(
     paths: @[],
-    # outName: "./$y-$m-$d.tar.gz", # outName includes path
-    file: "./backup.tar.gz", # outName includes path
+    file: "./$y-$m-$d.tar.gz", # file includes path
     cmd: "tar -czvf $f $F"
 )
 
@@ -86,15 +86,21 @@ when isMainModule:
             for path in @(args["<paths>"]):
                 absolutePath($path)
         config.paths.keepItIf(not paths.contains(it))
+
     # Backups the selected files
     elif args["backup"]:
         var command = config.cmd
-        # TODO make this into an actual parser
-        command = command.replace("$f", config.file)
+        let date = now()
+        command = command.replace("$f", config.file.multiReplace(
+            ("$y", $date.year),
+            ("$m", $ord(date.month)),
+            ("$d", $date.monthDay)
+        ))
         command = command.replace("$F", config.paths.join(" "))
         discard execCmd(command)
         if config.finish != "":
             discard execCmd(config.finish)
+
     # List all the files
     elif args["list"]:
         for path in config.paths:
